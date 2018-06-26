@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @event.name %>
+</p>
+
+<p>
+  <strong>Cover:</strong>
+  <div class="d-flex">
+    <div class="img-container">
+      <%= image_tag @event.cover.variant(resize: '100x100') if @event.cover.attached? %>
+      <%= link_to '刪除', destroy_cover_event_path(@event), method: :delete if @event.cover.attached? %>
+    </div>
+  </div>
+
+</p>
+
+<p>
+  <strong>Banners:</strong>
+  <div class="d-flex">
+    <%= form_for(@event, url: destroy_banners_event_path, method: :delete) do |form| %>
+      <% @event.banners.each do |banner| %>
+        <div class="img-container">
+          <%= check_box_tag :banners, banner.id, false, name: 'event[banners][]' %>
+          <%= image_tag banner.variant(resize: '100x100') %>
+          <%= link_to '刪除', destroy_banner_event_path(@event, banner), method: :delete %>
+        </div>
+      <% end %>
+
+      <% if @event.banners.attached? %>
+        <input type="submit" value="刪除多張圖片">
+      <% end %>
+    <% end %>
+  </div>
+</p>
+
+<%= link_to 'Edit', edit_event_path(@event) %> |
+<%= link_to 'Back', events_path %>

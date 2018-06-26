@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Title:</strong>
+  <%= @post.title %>
+</p>
+
+<p>
+  <strong>Cover:</strong>
+  <%= image_tag @post.cover.variant(resize: '100x100') if @post.cover.attached? %>
+</p>
+
+<p>
+  <strong>Images</strong>
+
+  <div class="uploads"
+    data-controller="uploads"
+    data-uploads-model="<%= @post.to_json %>"
+    data-uploads-direct-upload-url="<%= rails_direct_uploads_path %>"
+  >
+    <% @post.images.each do |image| %>
+      <div class="img-wrapper">
+        <%= image_tag image.variant(resize: '100x100') %>
+        <a href="<%= destroy_image_post_path(@post, image) %>" data-action="click->uploads#destroy">刪除</a>
+      </div>
+    <% end %>
+
+    <input type="file" multiple="true" data-action="change->uploads#start">
+  </div>
+</p>
+
+<%= link_to 'Edit', edit_post_path(@post) %> |
+<%= link_to 'Back', posts_path %>
